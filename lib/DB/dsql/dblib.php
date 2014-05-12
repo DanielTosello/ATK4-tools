@@ -21,6 +21,29 @@ class DB_dsql_dblib extends DB_dsql {
                 return $this->where($field, $cond, $value);
         }
 
+        function bt($s)
+        {
+        	if (is_array($s)) {
+        		$out=array();
+        		foreach ($s as $ss) {
+        			$out[]=$this->bt($ss);
+        		}
+        		return $out;
+        	}
+        
+        	if (is_object($s)
+        	|| $s==='*'
+        			|| strpos($s, '.')!==false
+        			|| strpos($s, '(')!==false
+        	) {
+        		return $s;
+        	}
+        
+        	return '['.$s.']';
+        }
+        
+        
+        
 }
 ?>
 
