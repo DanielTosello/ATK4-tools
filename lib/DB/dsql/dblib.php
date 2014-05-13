@@ -1,22 +1,41 @@
 <?php
 /**
- * Agile Toolkit 4 bdlib dsql connector. 
+ * Agile Toolkit 4 dblib dsql connector. 
  * 
  * Designed to use a locally configured dblib connector, unix only.
+ * Requires a dblib/FreeTDS connector be configured and available on the host system 
+ * with a valid MSSQL database on the other end.  
+ * 
+ * This file should be placed in the /lib/DB/dsql/ folder in your ATK4 project. 
+ * Standard DB functions should work... though testing has not yet been exhaustive.
+ * 
+ * At this stage target database cannot have spaces or slashes due to other background 
+ * stuff in the framework. Correcting this is on the TODO list.   
  *  
+ *  Author: Daniel Tosello (tosello.daniel@gmail.com)
+ *  License: GNU AFFERO GENERAL PUBLIC LICENSE - please see http://www.gnu.org/licenses/
  */
+
 
 
 
 class DB_dsql_dblib extends DB_dsql {
 	
         public $bt="";
-        
-        
+                
         function init(){
                 parent::init();
 
         }
+        
+        /**
+         * MSSQL likes its limits in a different way to other SQL languages.
+         * 
+         * MySQL: '... order by id limit n,n'
+         * MSSQL: '... order by id offset n rows fetch next n rows only'
+         * 
+         * @return string
+         */
 
         function render_limit(){
                 if($this->args['limit']){
@@ -68,9 +87,6 @@ class DB_dsql_dblib extends DB_dsql {
         
         	return '['.$s.']';
         }
-        
-        
-        
 }
 ?>
 
